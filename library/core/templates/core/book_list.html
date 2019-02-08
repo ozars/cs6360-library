@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="col-12 m-3 text-center">
-  <a class="btn btn-primary" href="{% url "book_create" %}">New</a>
+  <a class="btn btn-primary" href="{% url "book_create" %}">New Book</a>
 </div>
 
 <div class="col-12">
@@ -16,7 +16,7 @@
       </tr>
   </thead>
   <tbody>
-      {% for book in object_list %}
+      {% for book in book_list %}
       <tr>
         <td>{{ book.isbn }}</td>
         <td>{{ book.title }}</td>

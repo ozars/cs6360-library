@@ -2,6 +2,11 @@
 
 {% block content %}
 <h1>Book Details</h1>
-<h2>ISBN: {{ object.isbn }}</h2>
-Title: {{ object.title }}
+<p>ISBN: {{ object.isbn }}</p>
+<p>Title: {{ object.title }}</p>
+<ul>
+  {% for author in object.authored_by.all %}
+  <li>{{ author.name }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}

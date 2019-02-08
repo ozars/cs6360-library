@@ -6,13 +6,14 @@ from datetime import date, timedelta
 
 class Book(models.Model):
     book_id = models.AutoField(primary_key=True)
-    isbn = models.CharField(unique=True,
+    isbn = models.CharField(unique=True, verbose_name='ISBN',
             validators=[RegexValidator(regex=r'^\d{10}$',
                 message='ISBN must consist of ten digits.', code='nomatch')],
             max_length=10)
     title = models.CharField(max_length=256)
     authored_by = models.ManyToManyField('Author', through='BookAuthor',
-                                         through_fields=('book', 'author'))
+                                         through_fields=('book', 'author'),
+                                         auto_created=True)
 
     def get_absolute_url(self):
         return reverse("book_detail", kwargs={'pk': self.pk})
@@ -31,7 +32,7 @@ class Author(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("author-view", kwargs={'author_id': self.author_id})
+        return reverse("author-view", kwargs={'pk': self.pk})
 
     class Meta:
         db_table = 'AUTHORS'
@@ -47,8 +48,8 @@ class BookAuthor(models.Model):
 
 class Borrower(models.Model):
     card_id = models.AutoField(primary_key=True)
-    ssn = models.CharField(max_length=9, unique=True)
-    bname = models.CharField(max_length=64)
+    ssn = models.CharField(max_length=9, unique=True, verbose_name='SSN')
+    bname = models.CharField(max_length=64, verbose_name='Borrower')
     address = models.CharField(max_length=128)
     phone = models.CharField(max_length=16)
 
