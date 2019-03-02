@@ -27,6 +27,38 @@ class ImportFilesView(FormView):
         logger.critical(form.errors)
         return super().form_invalid(form)
 
+class TextColumn(tables.Column):
+    def __init__(self, text = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.text = text
+
+    def text_value(self, record, value):
+        if self.text is None:
+            return value
+        return self.text(record) if callable(self.text) else self.text
+
+    def value(self, record, value):
+        return self.text_value(record, value)
+
+    def render(self, record, value):
+        return self.text_value(record, value)
+
+class BookBorrowerColumn(TextColumn):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def borrower(self, book):
+        loans = book.loans.filter(date_in__isnull=True)
+        if not loans.exists():
+            return None
+        return loans[0].borrower
+
+    def text_value(self, book, value):
+        borrower = self.borrower(book)
+        if not borrower:
+            return "Available"
+        return borrower
+
 class BookView:
     #  class List(generic_table_view(Book)):
     #      pass
@@ -35,9 +67,7 @@ class BookView:
         isbn = tables.Column()
         title = tables.Column()
         authored_by = tables.ManyToManyColumn(linkify_item=True)
-        status = tables.Column(linkify=True, default="Available",
-                accessor="loans.objects.latest()",
-                verbose_name="Status")
+        loans = BookBorrowerColumn(verbose_name="Status")
 
     class List(tables.SingleTableView):
         queryset = Book.objects.all()
@@ -45,9 +75,6 @@ class BookView:
         @staticmethod
         def get_table_class():
             return BookView.Table
-
-    #  class List(ListView):
-    #      model = Book
 
     class Detail(DetailView):
         model = Book
@@ -112,7 +139,7 @@ class LoanView:
         success_url = reverse_lazy('loan_list')
 
     class Update(UpdateView):
-        model = Borrower
+        model = Loan
         fields = ['loan_id', 'book', 'borrower', 'date_out', 'due_date',
                   'date_in']
         success_url = reverse_lazy('loan_list')

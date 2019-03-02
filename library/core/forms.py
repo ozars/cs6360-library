@@ -7,8 +7,6 @@ import io
 import logging
 logger = logging.getLogger(__name__)
 
-
-
 class ImportFilesForm(forms.Form):
     books_file = forms.FileField()
     borrowers_file = forms.FileField()

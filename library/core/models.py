@@ -65,6 +65,9 @@ class Borrower(models.Model):
     def __str__(self):
         return self.bname
 
+    def get_absolute_url(self):
+        return reverse("borrower_detail", kwargs={'pk': self.pk})
+
     class Meta:
         db_table = 'BORROWER'
 
