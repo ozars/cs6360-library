@@ -11,7 +11,7 @@
 
 - How to run project:
 ```
-   docker-compuse up --build
+   docker-compose up --build
 ```
 
 - It starts publishing the website on `localhost:8000` and adminer interface on `localhost:8080`.
