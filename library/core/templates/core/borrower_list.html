@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<div class="col-12 m-3 text-center">
+  <a class="btn btn-primary" href="{% url "borrower_create" %}">New Borrower</a>
+</div>
+
+<div class="col-12">
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">SSN</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Phone</th>
+        <th scope="col">View</th>
+        <th scope="col">Edit</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for borrower in borrower_list %}
+      <tr>
+        <td>{{ borrower.ssn }}</td>
+        <td>{{ borrower.bname }}</td>
+        <td>{{ borrower.address }}</td>
+        <td>{{ borrower.phone }}</td>
+        <td><a href="{% url "borrower_detail" borrower.card_id %}">Details</a></td>
+        <td><a href="{% url "borrower_update" borrower.card_id %}">Edit</a></td>
+      </tr>
+      {% endfor %}
+  </tbody>
+  </table>
+</div>
+
+{% endblock %}

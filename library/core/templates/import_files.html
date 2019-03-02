@@ -2,9 +2,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Create Book" class="btn btn-success" />
+    <input type="submit" value="Import" class="btn btn-success" />
 </form>
 {% endblock %}

@@ -13,7 +13,9 @@ class Book(models.Model):
     title = models.CharField(max_length=256)
     authored_by = models.ManyToManyField('Author', through='BookAuthor',
                                          through_fields=('book', 'author'),
-                                         auto_created=True)
+                                         auto_created=True,
+                                         verbose_name='Authors',
+                                         related_name='+')
 
     def get_absolute_url(self):
         return reverse("book_detail", kwargs={'pk': self.pk})
@@ -27,21 +29,28 @@ class Book(models.Model):
 class Author(models.Model):
     author_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=256)
+    authored = models.ManyToManyField('Book', through='BookAuthor',
+                                         through_fields=('author', 'book'),
+                                         auto_created=True,
+                                         verbose_name='Books',
+                                         related_name='+')
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("author-view", kwargs={'pk': self.pk})
+        return reverse("author_detail", kwargs={'pk': self.pk})
 
     class Meta:
         db_table = 'AUTHORS'
 
 class BookAuthor(models.Model):
     author = models.ForeignKey(Author, to_field='author_id',
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE,
+                               related_name='+')
     book = models.ForeignKey(Book, to_field='isbn', db_column='isbn',
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name='+')
 
     class Meta:
         db_table = 'BOOK_AUTHORS'
@@ -83,6 +92,9 @@ class Fine(models.Model):
                                 primary_key=True)
     fine_amt = models.DecimalField(max_digits=7, decimal_places=2)
     paid = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("loan_detail", kwargs={'pk': self.pk})
 
     class Meta:
         db_table = 'FINES'

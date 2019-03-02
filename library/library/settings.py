@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +25,35 @@ SECRET_KEY = 'qy4vk!mj#f5)9p(1t+mid8@$#l8%j^#=w)af7c@t5sf=%ai46o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'stderr': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stderr,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['stderr'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['stderr'],
+            'propagate': False,
+        },
+        'library': {
+            'handlers': ['stderr'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 ALLOWED_HOSTS = ["*"]
 
@@ -39,9 +69,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'crispy_forms',
+    'django_tables2',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+DJANGO_TABLES2_TEMPLATE  = 'django_tables2/bootstrap4.html'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -111,7 +143,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
+
+LANGUAGES = ('en', 'English')
 
 TIME_ZONE = 'America/Chicago'
 

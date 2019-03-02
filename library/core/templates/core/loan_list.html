@@ -1,0 +1,37 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<div class="col-12 m-3 text-center">
+  <a class="btn btn-primary" href="{% url "loan_create" %}">New Loan</a>
+</div>
+
+<div class="col-12">
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Name</th>
+        <th scope="col">Date Out</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Checked In</th>
+        <th scope="col">Details</th>
+        <th scope="col">Edit</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for loan in loan_list %}
+      <tr>
+        <td>{{ loan.book.title }}</td>
+        <td>{{ loan.borrower.bname }}</td>
+        <td>{{ loan.date_out }}</td>
+        <td>{{ loan.due_date }}</td>
+        <td>{{ loan.date_in }}</td>
+        <td><a href="{% url "loan_detail" loan.loan_id %}">Details</a></td>
+        <td><a href="{% url "loan_update" loan.loan_id %}">Edit</a></td>
+      </tr>
+      {% endfor %}
+  </tbody>
+  </table>
+</div>
+
+{% endblock %}

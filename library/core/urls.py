@@ -1,10 +1,16 @@
 from django.urls import path
 from .views import (
-    HomeView, BookView, AuthorView, BorrowerView, LoanView, FineView
+    HomeView, ImportFilesView, BookView, AuthorView, BorrowerView, LoanView,
+    FineView
 )
 
 urlpatterns = [
     path('', HomeView.as_view(), name='homepage'),
+
+    path('import/', ImportFilesView.as_view(), name='import_files'),
+    path('import/ok', ImportFilesView.as_view(
+        extra_context={'alert_msg': 'OK', 'alert_class': 'alert-success'}),
+        name='import_files_success'),
 
     path('books/', BookView.List.as_view(), name='book_list'),
     path('books/<int:pk>', BookView.Detail.as_view(),

@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<div class="col-12 m-3 text-center">
+  <!-- <a class="btn btn-primary" href="">New fine</a> -->
+</div>
+
+<div class="col-12">
+  <table class="table">
+  <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Days Passed</th>
+        <th scope="col">Details</th>
+        <!-- <th scope="col">Edit</th> -->
+      </tr>
+  </thead>
+  <tbody>
+      {% for fine in fine_list %}
+      <tr>
+        <td>{{ fine.loan.borrower.name }}</td>
+        <td>{{ fine.fine_amt }}</td>
+        <td>{{ fine.due_date }}</td>
+        <td>{{ fine.due_date }}</td>
+        <td><a href="{% url "fine_detail" fine.fine_id %}">Details</a></td>
+        <!-- <td><a href="{% url "fine_update" fine.fine_id %}">Edit</a></td> -->
+      </tr>
+      {% endfor %}
+  </tbody>
+  </table>
+</div>
+
+{% endblock %}
